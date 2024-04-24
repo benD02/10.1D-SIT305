@@ -60,16 +60,43 @@
         android:textColor="@color/black"
         android:textSize="20dp" />
 
-    <Button
-        android:id="@+id/btnRefreshQuizzes"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="356dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:text="Refresh Quizzes"
-        android:gravity="start|center_vertical"
-        android:textColor="@color/white"
-        app:icon="@drawable/baseline_refresh_24" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnRefreshQuizzes"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="Refresh"
+            android:gravity="start|center_vertical"
+            android:textColor="@color/white"
+            app:icon="@drawable/baseline_refresh_24" />
+
+        <Button
+            android:id="@+id/btnHistory"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="History"
+            android:gravity="start|center_vertical"
+            android:textColor="@color/white"
+             />
+
+        <Button
+            android:id="@+id/btnUpgrade"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="Upgrade"
+            android:gravity="start|center_vertical"
+            android:textColor="@color/white" />
+    </LinearLayout>
 
 
 
