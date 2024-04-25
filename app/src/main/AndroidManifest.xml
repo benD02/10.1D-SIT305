@@ -24,6 +24,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".AccountActivity"
+            android:exported="false" />
+        <activity
             android:name=".UpgradeActivity"
             android:exported="false" />
         <activity
@@ -32,7 +35,6 @@
         <activity
             android:name=".ui.theme.ResultsActivity"
             android:exported="false" />
-
         <activity
             android:name=".QuizActivity"
             android:exported="false"

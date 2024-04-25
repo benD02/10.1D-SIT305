@@ -48,6 +48,9 @@ public class ProfileActivity extends AppCompatActivity implements QuizAdapter.On
     private Button btnRefreshQuizzes;
 
     private Button btnGenerate;
+
+    private Button btnAccount;
+
     private String username;
 
 
@@ -67,6 +70,7 @@ public class ProfileActivity extends AppCompatActivity implements QuizAdapter.On
     }
 
     private void initView() {
+
         btnGenerate = findViewById(R.id.btnGenerate);
         btnGenerate.setOnClickListener(v -> generateQuiz());
         Button btnUpgrade = findViewById(R.id.btnUpgrade); // Find the button
@@ -96,6 +100,13 @@ public class ProfileActivity extends AppCompatActivity implements QuizAdapter.On
             public void onClick(View v) {
                 generateQuiz();
             }
+        });
+
+
+        btnAccount = findViewById(R.id.btnAccount);
+        btnAccount.setOnClickListener(v -> {
+            Intent upgradeIntent = new Intent(ProfileActivity.this, AccountActivity.class);
+            startActivity(upgradeIntent);
         });
     }
 
