@@ -49,6 +49,8 @@ public class ProfileActivity extends AppCompatActivity implements QuizAdapter.On
 
     private Button btnGenerate;
 
+    private Button btnHistory;
+
     private Button btnAccount;
 
     private String username;
@@ -108,6 +110,15 @@ public class ProfileActivity extends AppCompatActivity implements QuizAdapter.On
             Intent upgradeIntent = new Intent(ProfileActivity.this, AccountActivity.class);
             startActivity(upgradeIntent);
         });
+
+        btnHistory = findViewById(R.id.btnHistory);
+        btnHistory.setOnClickListener(v -> {
+            Intent upgradeIntent = new Intent(ProfileActivity.this, AccountActivity.class);
+            startActivity(upgradeIntent);
+        });
+
+
+
     }
 
     private void refreshQuizzes() {
