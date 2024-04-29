@@ -14,16 +14,19 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 
 import java.util.List;
+import java.util.ArrayList;
+
 
 public class QuizActivity extends AppCompatActivity {
-
-    private String userName;
+    private String username;
 
     private int quizId;
 
 
     private Quiz currentQuiz;
     private int currentQuestionIndex = 0;
+    private List<QuizResult> quizResults = new ArrayList<>();
+
 
     private int correctAnswers = 0;
 
@@ -44,6 +47,7 @@ public class QuizActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
 
         quizId = getIntent().getIntExtra("quizId", -1);
+        username = getIntent().getStringExtra("username");
 
 
         String quizData = getIntent().getStringExtra("quiz_data");
@@ -102,6 +106,7 @@ public class QuizActivity extends AppCompatActivity {
 
 
     private void checkAnswer(int selectedOptionIndex) {
+
         int correctAnswerIndex = currentQuiz.getQuestions().get(currentQuestionIndex).getCorrectAnswerIndex();
         if (selectedOptionIndex == correctAnswerIndex) {
             correctAnswers++;  // Increment the count of correct answers
@@ -109,6 +114,12 @@ public class QuizActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Wrong!", Toast.LENGTH_SHORT).show();
         }
+
+        Question currentQuestion = currentQuiz.getQuestions().get(currentQuestionIndex);
+        boolean isCorrect = selectedOptionIndex == currentQuestion.getCorrectAnswerIndex();
+        quizResults.add(new QuizResult(currentQuestion.getQuestionText(),
+                currentQuestion.getOptions().get(selectedOptionIndex), isCorrect));
+
 
         // Move to the next question or finish the quiz
         if (currentQuestionIndex < currentQuiz.getQuestions().size() - 1) {
@@ -124,10 +135,14 @@ public class QuizActivity extends AppCompatActivity {
         int totalQuestions = currentQuiz.getQuestions().size();
         Toast.makeText(this, "Quiz Completed", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, ResultsActivity.class);
-        intent.putExtra("userName", userName);
+        intent.putExtra("username", username);
         intent.putExtra("totalQuestions", totalQuestions);
         intent.putExtra("correctAnswers", correctAnswers);
         intent.putExtra("quizId", quizId);
+
+        DatabaseHelper db = new DatabaseHelper(this);
+        db.saveQuizResults(quizId, quizResults);
+
         startActivity(intent);
         finish();
     }

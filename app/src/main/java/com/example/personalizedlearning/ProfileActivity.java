@@ -113,7 +113,8 @@ public class ProfileActivity extends AppCompatActivity implements QuizAdapter.On
 
         btnHistory = findViewById(R.id.btnHistory);
         btnHistory.setOnClickListener(v -> {
-            Intent upgradeIntent = new Intent(ProfileActivity.this, AccountActivity.class);
+            Intent upgradeIntent = new Intent(ProfileActivity.this, HistoryActivity.class);
+            upgradeIntent.putExtra("USERNAME_KEY", username);
             startActivity(upgradeIntent);
         });
 
@@ -284,7 +285,7 @@ public class ProfileActivity extends AppCompatActivity implements QuizAdapter.On
             Intent intent = new Intent(ProfileActivity.this, QuizActivity.class);
             intent.putExtra("quiz_data", serializedQuiz);
             intent.putExtra("quizId", clickedQuiz.getQuizId());
-            intent.putExtra("userName", getUsername());
+            intent.putExtra("username", getUsername());
             startActivity(intent);
         } else {
             Toast.makeText(this, "Quiz data is incomplete.", Toast.LENGTH_SHORT).show();

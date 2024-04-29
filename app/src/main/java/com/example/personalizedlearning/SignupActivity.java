@@ -102,6 +102,7 @@ public class SignupActivity extends AppCompatActivity {
 
         // Proceed to the InterestActivity
         Intent intent = new Intent(SignupActivity.this, InterestActivity.class);
+        intent.putExtra("USERNAME", username);  // Pass the username as an intent extra
         startActivity(intent);
     }
 
