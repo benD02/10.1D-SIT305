@@ -266,6 +266,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return results;
     }
 
+    public List<Quiz> getAllQuizzesWithResults(int userId) {
+        List<Quiz> quizzes = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT q.*, qr.question_text, qr.user_answer, qr.correct FROM " + TABLE_QUIZZES + " q " +
+                "LEFT JOIN quiz_results qr ON q.quiz_id = qr.quiz_id WHERE q.user_id=?";
+        Cursor cursor = db.rawQuery(query, new String[] {String.valueOf(userId)});
+
+
+        if (cursor.moveToFirst()) {
+            do {
+                int quizId = cursor.getInt(cursor.getColumnIndex(COLUMN_QUIZ_ID));
+                String quizName = cursor.getString(cursor.getColumnIndex(COLUMN_QUIZ_NAME));
+                String topic = cursor.getString(cursor.getColumnIndex(COLUMN_QUIZ_TOPIC));
+
+                boolean isCompleted = cursor.getInt(cursor.getColumnIndex(COLUMN_QUIZ_COMPLETED)) == 1;
+
+                List<Question> questions = getQuestionsForQuiz(quizId);
+                Quiz quiz = new Quiz(quizId, quizName, topic, questions, isCompleted);
+                quizzes.add(quiz);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return quizzes;
+    }
+
+
+
+
+
+
 
 
     @Override
