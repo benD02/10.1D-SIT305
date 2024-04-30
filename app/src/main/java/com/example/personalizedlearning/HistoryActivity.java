@@ -8,7 +8,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class HistoryActivity extends AppCompatActivity {
 
@@ -34,21 +36,49 @@ public class HistoryActivity extends AppCompatActivity {
         loadAllQuizResults(userId);
     }
 
+//    private void loadAllQuizResults(int userId) {
+//        DatabaseHelper db = new DatabaseHelper(this);
+//        listData.clear(); // Clear existing data
+//
+//        List<Quiz> quizzes = db.getAllQuizzesWithResults(userId);
+//        for (Quiz quiz : quizzes) {
+//            listData.add("Quiz: " + quiz.getQuizName());
+//            for (Question question : quiz.getQuestions()) {
+//                listData.add(question.getQuestionText() + "\nAnswer: " + QuizResult.getUserAnswer() +
+//                        " (" + (QuizResult.isCorrect() ? "Correct" : "Incorrect") + ")");
+//            }
+//            listData.add(""); // Add a spacer between quizzes
+//        }
+//
+//        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listData);
+//        quizResultsListView.setAdapter(adapter);
+//        adapter.notifyDataSetChanged(); // Notify the adapter of data changes
+//
+//    }
+
+
     private void loadAllQuizResults(int userId) {
         DatabaseHelper db = new DatabaseHelper(this);
+        Set<Integer> addedQuizzes = new HashSet<>();  // Set to track added quizzes
+        listData.clear(); // Clear existing data
+
         List<Quiz> quizzes = db.getAllQuizzesWithResults(userId);
         for (Quiz quiz : quizzes) {
-            listData.add("Quiz: " + quiz.getQuizName());
-            for (Question question : quiz.getQuestions()) {
-                listData.add(question.getQuestionText() + "\nAnswer: " + QuizResult.getUserAnswer() +
-                        " (" + (QuizResult.isCorrect() ? "Correct" : "Incorrect") + ")");
+            if (!addedQuizzes.contains(quiz.getQuizId())) {  // Only add if not already added
+                listData.add("Quiz: " + quiz.getQuizName());
+                for (Question question : quiz.getQuestions()) {
+                    listData.add(question.getQuestionText() + "\nAnswer: " + QuizResult.getUserAnswer() +
+                            " (" + (QuizResult.isCorrect() ? "Correct" : "Incorrect") + ")");
+                }
+                listData.add(""); // Add a spacer between quizzes
+                addedQuizzes.add(quiz.getQuizId());  // Mark this quiz as added
             }
-            listData.add(""); // Add a spacer between quizzes
         }
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listData);
         quizResultsListView.setAdapter(adapter);
     }
+
 
     // You need to implement this method based on your user authentication system
     private int getUserId(String username) {

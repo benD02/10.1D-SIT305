@@ -245,53 +245,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-//    public List<QuizResult> getQuizResults(int quizId) {
-//        List<QuizResult> results = new ArrayList<>();
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        Cursor cursor = db.query("quiz_results",
-//                new String[] {"question_text", "user_answer", "correct"},
-//                "quiz_id = ?", new String[] {String.valueOf(quizId)},
-//                null, null, null);
-//
-//        if (cursor.moveToFirst()) {
-//            do {
-//                String question = cursor.getString(cursor.getColumnIndex("question_text"));
-//                String userAnswer = cursor.getString(cursor.getColumnIndex("user_answer"));
-//                boolean isCorrect = cursor.getInt(cursor.getColumnIndex("correct")) == 1;
-//                results.add(new QuizResult(question, userAnswer, isCorrect));
-//            } while (cursor.moveToNext());
-//        }
-//        cursor.close();
-//        db.close();
-//        return results;
-//    }
-
-    public List<Quiz> getAllQuizzesWithResults(int userId) {
-        List<Quiz> quizzes = new ArrayList<>();
+    public List<QuizResult> getQuizResults(int quizId) {
+        List<QuizResult> results = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-
-        String query = "SELECT * FROM " + TABLE_QUIZZES + " WHERE user_id=?";
-        Cursor cursor = db.rawQuery(query, new String[] {String.valueOf(userId)});
+        Cursor cursor = db.query("quiz_results",
+                new String[] {"question_text", "user_answer", "correct"},
+                "quiz_id = ?", new String[] {String.valueOf(quizId)},
+                null, null, null);
 
         if (cursor.moveToFirst()) {
             do {
-                int quizId = cursor.getInt(cursor.getColumnIndex(COLUMN_QUIZ_ID));
-                String quizName = cursor.getString(cursor.getColumnIndex(COLUMN_QUIZ_NAME));
-                String topic = cursor.getString(cursor.getColumnIndex(COLUMN_QUIZ_TOPIC));
-
-                boolean isCompleted = cursor.getInt(cursor.getColumnIndex(COLUMN_QUIZ_COMPLETED)) == 1;
-
-                List<Question> questions = getQuestionsForQuiz(quizId);
-                Quiz quiz = new Quiz(quizId, quizName, topic, questions, isCompleted);
-                quizzes.add(quiz);
+                String question = cursor.getString(cursor.getColumnIndex("question_text"));
+                String userAnswer = cursor.getString(cursor.getColumnIndex("user_answer"));
+                boolean isCorrect = cursor.getInt(cursor.getColumnIndex("correct")) == 1;
+                results.add(new QuizResult(question, userAnswer, isCorrect));
             } while (cursor.moveToNext());
         }
         cursor.close();
         db.close();
-        return quizzes;
+        return results;
     }
-
-
 
 
 
