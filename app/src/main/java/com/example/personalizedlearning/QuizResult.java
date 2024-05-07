@@ -2,8 +2,8 @@ package com.example.personalizedlearning;
 
 public class QuizResult {
     private String question;
-    private static String userAnswer;
-    private static boolean correct;
+    private String userAnswer;
+    private boolean correct;
 
     public QuizResult(String question, String userAnswer, boolean correct){
         this.question = question;
@@ -16,12 +16,12 @@ public class QuizResult {
         return question;
     }
 
-    public static String getUserAnswer(){
+    public String getUserAnswer(){
         return userAnswer;
     }
 
 
-    public static boolean isCorrect() {
+    public boolean isCorrect() {
         return correct;
     }
 

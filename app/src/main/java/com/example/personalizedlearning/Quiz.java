@@ -1,4 +1,5 @@
 package com.example.personalizedlearning;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -7,9 +8,8 @@ public class Quiz implements Serializable {
     private String quizName;
     private String quizDescription;
     private List<Question> questions;
-
+    private List<QuizResult> results; // Added to hold quiz results
     private boolean isCompleted;
-
 
     // Updated constructor
     public Quiz(int quizId, String quizName, String quizDescription, List<Question> questions, boolean isCompleted) {
@@ -18,7 +18,6 @@ public class Quiz implements Serializable {
         this.quizDescription = quizDescription;
         this.questions = questions;
         this.isCompleted = isCompleted;
-
     }
 
     // Getters and setters
@@ -46,6 +45,14 @@ public class Quiz implements Serializable {
         this.questions = questions;
     }
 
+    public List<QuizResult> getResults() {
+        return results;
+    }
+
+    public void setResults(List<QuizResult> results) {
+        this.results = results;
+    }
+
     public int getTotalQuestions() {
         return questions != null ? questions.size() : 0;
     }
@@ -58,4 +65,3 @@ public class Quiz implements Serializable {
         isCompleted = completed;
     }
 }
-
