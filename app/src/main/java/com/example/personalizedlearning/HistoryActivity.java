@@ -16,8 +16,10 @@ import java.util.Set;
 public class HistoryActivity extends AppCompatActivity {
 
     private ListView quizResultsListView;
-    private ArrayAdapter<String> adapter;
-    private List<String> listData;
+    private List<QuizResult> listData;
+
+    private CustomQuizAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,35 +75,32 @@ public class HistoryActivity extends AppCompatActivity {
     private void loadAllQuizResults(int userId) {
         DatabaseHelper db = new DatabaseHelper(this);
         Set<Integer> addedQuizzes = new HashSet<>();
-        listData.clear();
+        List<QuizResult> listData = new ArrayList<>();  // Changed to store QuizResult objects
 
         List<Quiz> quizzes = db.getAllQuizzesWithResults(userId);
         for (Quiz quiz : quizzes) {
             if (!addedQuizzes.contains(quiz.getQuizId())) {
-                listData.add("Quiz: " + quiz.getQuizName());
                 List<Question> questions = quiz.getQuestions();
                 List<QuizResult> results = quiz.getResults();
-                Log.d("HistoryActivity", "Quiz: " + quiz.getQuizName() + " | Quiz ID: " + quiz.getQuizId());
 
-                // Assuming each question has a corresponding result in a list within the Quiz object
                 for (int i = 0; i < questions.size(); i++) {
                     Question question = questions.get(i);
-                    QuizResult result = results.get(i);  // This assumes that the results are stored in the same order as questions
-                    String logMessage = "Question: " + question.getQuestionText() +
-                            "\nAnswer given: " + result.getUserAnswer() +
-                            "\nCorrect: " + (result.isCorrect() ? "Yes" : "No");
-                    Log.d("HistoryActivity", logMessage);
-                    listData.add(question.getQuestionText() + "\nAnswer: " + result.getUserAnswer() +
-                            " (" + (result.isCorrect() ? "Correct" : "Incorrect") + ")");
+                    QuizResult result = results.get(i);
+                    listData.add(result);  // Directly add QuizResult objects to the list
                 }
-                listData.add(""); // Spacer between quizzes
+                // Add a blank QuizResult as a spacer if it's not the last quiz
+                if (quizzes.indexOf(quiz) < quizzes.size() - 1) {
+                    listData.add(new QuizResult("", "", false));  // Spacer between each quiz
+                }
                 addedQuizzes.add(quiz.getQuizId());
             }
         }
 
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listData);
+        // Update adapter to handle List<QuizResult>
+        adapter = new CustomQuizAdapter(this, R.layout.list_item_quiz_result, listData);
         quizResultsListView.setAdapter(adapter);
     }
+
 
 
 
