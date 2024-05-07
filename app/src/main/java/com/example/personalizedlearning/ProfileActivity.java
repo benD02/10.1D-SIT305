@@ -108,6 +108,7 @@ public class ProfileActivity extends AppCompatActivity implements QuizAdapter.On
         btnAccount = findViewById(R.id.btnAccount);
         btnAccount.setOnClickListener(v -> {
             Intent upgradeIntent = new Intent(ProfileActivity.this, AccountActivity.class);
+            upgradeIntent.putExtra("USERNAME", username);
             startActivity(upgradeIntent);
         });
 

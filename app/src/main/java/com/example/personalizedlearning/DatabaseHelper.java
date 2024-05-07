@@ -225,6 +225,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public String getEmail(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String email = null;
+        String[] projection = {COLUMN_USER_EMAIL};
+        String selection = COLUMN_USER_USERNAME + " = ?";
+        String[] selectionArgs = {username};
+
+        Cursor cursor = db.query(TABLE_USERS, projection, selection, selectionArgs, null, null, null);
+        if (cursor.moveToFirst()) {
+            email = cursor.getString(cursor.getColumnIndex(COLUMN_USER_EMAIL));
+        }
+        cursor.close();
+        db.close();
+        return email;
+    }
+
+
 
 
     public void saveQuizResults(int quizId, List<QuizResult> results) {

@@ -80,6 +80,8 @@ public class HistoryActivity extends AppCompatActivity {
         List<Quiz> quizzes = db.getAllQuizzesWithResults(userId);
         for (Quiz quiz : quizzes) {
             if (!addedQuizzes.contains(quiz.getQuizId())) {
+                listData.add(new QuizResult("Quiz: " + quiz.getQuizName()));  // This is a header
+
                 List<Question> questions = quiz.getQuestions();
                 List<QuizResult> results = quiz.getResults();
 

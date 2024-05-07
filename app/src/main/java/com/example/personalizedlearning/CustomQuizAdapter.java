@@ -1,6 +1,10 @@
 package com.example.personalizedlearning;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,13 +35,26 @@ public class CustomQuizAdapter extends ArrayAdapter<QuizResult> { // Changed to 
         TextView tvAnswer = convertView.findViewById(R.id.tvAnswer);
 
         // Handling empty quiz results (spacers)
-        if (quizResult.getQuestion().isEmpty() && quizResult.getUserAnswer().isEmpty()) {
+        if(quizResult.isHeader()){
+            tvQuestion.setText(quizResult.getQuestion());
+            tvAnswer.setText("");
+
+        } else if (quizResult.getQuestion().isEmpty() && quizResult.getUserAnswer().isEmpty()) {
             tvQuestion.setText(" ");
             tvAnswer.setText(" ");
             convertView.setVisibility(View.GONE);
         } else {
             tvQuestion.setText(quizResult.getQuestion());
-            tvAnswer.setText(quizResult.getUserAnswer() + " (" + (quizResult.isCorrect() ? "Correct" : "Incorrect") + ")");
+
+            String answerText = quizResult.getUserAnswer() + " (" + (quizResult.isCorrect() ? "Correct" : "Incorrect") + ")";
+            SpannableString spannableString = new SpannableString(answerText);
+            int start = answerText.indexOf("(") + 1;
+            int end = answerText.indexOf(")");
+            int color = quizResult.isCorrect() ? Color.GREEN : Color.RED;
+            spannableString.setSpan(new ForegroundColorSpan(color), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            tvAnswer.setText(spannableString);
+
             convertView.setVisibility(View.VISIBLE);
         }
 
